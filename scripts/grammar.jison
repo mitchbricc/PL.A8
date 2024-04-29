@@ -23,6 +23,7 @@ LETTER		      [a-zA-Z]
 "~"                   		      { return 'NEG'; }
 "not"                  		      { return 'NOT'; }
 "add1"                                { return 'ADD1'; }
+"letmr"                               { return 'LETMR'; }
 "lets"                                { return 'LETS'; }
 "let"                                 { return 'LET'; }
 "in"                                  { return 'IN'; }
@@ -62,6 +63,7 @@ exp
     | prim1_app_exp { $$ = $1; }
     | prim2_app_exp { $$ = $1; }
     | if_exp        { $$ = $1; }
+    | letmr_exp     { $$ = $1; }
     | lets_exp      { $$ = $1; }
     | let_exp       { $$ = $1; }
     | print_exp     { $$ = $1; }
@@ -100,11 +102,16 @@ block
     : exp                  { $$ = [ $1 ]; }
     | exp SEMICOLON block  { $3.unshift( $1 ); $$ = $3; }
     ;
+letmr_exp
+    : LETMR assignfn_exp assignfn_exp IN block END
+           { $$ = SLang.absyn.createLetmrExp($2,$3,$5);}
+    ; 
+assignfn_exp
+    : SET VAR EQ fn_exp  { $$ = SLang.absyn.createAssignExp( $2, $4 ); }
+    ;
 lets_exp
     : LETS bindings IN block END
-        {   
-             $$ = SLang.absyn.createLetsExp($2,$4);
-           }
+        {   $$ = SLang.absyn.createLetsExp($2,$4);}
     ;
 let_exp
     : LET bindings IN block END

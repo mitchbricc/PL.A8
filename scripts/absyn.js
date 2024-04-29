@@ -269,6 +269,38 @@ function getLetsExpBlock(e) {
 			"The argument of getLetsExpBlock is not an LetsExp.");
     }
 }
+function createLetmrExp(fn1,fn2,block) {
+    console.log('letmer');
+    return ["LetmrExp",fn1,fn2,block];
+}
+function isLetmrExp(e) { 
+    return e[0] === "LetmrExp"; 
+}
+function getLetmrExpfn1(e) { 
+    if (isLetmrExp(e)) {
+	return e[1];
+    } else {
+	throw new Error("Interpreter error: "  +
+			"The argument of getLetmrExpfn1 is not an LetmrExp.");
+    }
+}
+function getLetmrExpfn2(e) { 
+    if (isLetmrExp(e)) {
+	return e[2];
+    } else {
+	throw new Error("Interpreter error: "  +
+			"The argument of getLetmrExpfn2 is not an LetmrExp.");
+    }
+}
+function getLetmrExpBlock(e) { 
+    if (isLetmrExp(e)) {
+	return e[3];
+    } else {
+	throw new Error("Interpreter error: "  +
+			"The argument of getLetmrExpBlock is not an LetmrExp.");
+    }
+}
+
 
 exports.createProgram = createProgram;
 exports.isProgram = isProgram;
@@ -319,6 +351,11 @@ exports.createLetsExp = createLetsExp;
 exports.isLetsExp = isLetsExp;
 exports.getLetsExpBindings = getLetsExpBindings;
 exports.getLetsExpBlock = getLetsExpBlock;
+exports.createLetmrExp = createLetmrExp;
+exports.isLetmrExp = isLetmrExp;
+exports.getLetmrExpfn1 = getLetmrExpfn1;
+exports.getLetmrExpfn2 = getLetmrExpfn2;
+exports.getLetmrExpBlock = getLetmrExpBlock;
 
 SLang.absyn = exports;
 }());

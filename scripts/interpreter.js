@@ -119,7 +119,7 @@ function evalExp(exp,envir) {
     } else if (A.isIfExp(exp)) {
 	if (E.getBoolValue(evalExp(A.getIfExpCond(exp),envir))) {
 	    return evalExp(A.getIfExpThen(exp),envir);
-	} else {
+	} else { 
 	    return evalExp(A.getIfExpElse(exp),envir);
 	}
     } else if (A.isLetsExp(exp)) {
@@ -142,6 +142,17 @@ function evalExp(exp,envir) {
             var letsexp = A.createLetsExp(bindings,body);
             evalExp(letsexp, envir);
         }
+    } else if(A.isLetmrExp(exp)){
+        var fn1 = A.getLetmrExpfn1(exp);
+        var fn2 = A.getLetmrExpfn2(exp);
+        var body = A.getLetmrExpBody(exp);
+        console.log('fn1: ');
+        console.log(fn1);
+        console.log('fn2: ');
+        console.log(fn2);
+        console.log('body: ');
+        console.log(body);
+        return E.createNum(-1);
     } else {
 	throw "Error: Attempting to evaluate an invalid expression";
     }
