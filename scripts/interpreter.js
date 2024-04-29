@@ -123,14 +123,10 @@ function evalExp(exp,envir) {
 	    return evalExp(A.getIfExpElse(exp),envir);
 	}
     } else if (A.isLetsExp(exp)) {
-        console.log("lets!!!");
-        console.log(exp);
         var bindings = A.getLetsExpBindings(exp);
         var body = A.getLetsExpBlock(exp);
         var params = bindings[0];
         var args = bindings[1];
-        console.log('params: ');
-        console.log(params);
         if(params.length === 0){
             var fnexp = A.createFnExp([],body);
             var appExp = SLang.absyn.createAppExp(fnexp,[]);
@@ -138,8 +134,6 @@ function evalExp(exp,envir) {
         }
         else{
             envir = E.update(envir, params[0], [E.createNum(-1)]);
-            console.log('arg: ');
-            console.log(evalExp(args[0],envir));
             E.lookupReference(
                          envir,params[0])[0] = evalExp(args[0],envir);
             params = params.slice(1);
