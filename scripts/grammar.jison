@@ -107,7 +107,7 @@ letmr_exp
            { $$ = SLang.absyn.createLetmrExp($2,$3,$5);}
     ; 
 assignfn_exp
-    : SET VAR EQ fn_exp  { $$ = SLang.absyn.createAssignExp( $2, $4 ); }
+    : VAR EQ fn_exp  { $$ = SLang.absyn.createAssignExp( $1, $3 ); }
     ;
 lets_exp
     : LETS bindings IN block END

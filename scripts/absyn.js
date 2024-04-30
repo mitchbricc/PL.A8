@@ -270,7 +270,6 @@ function getLetsExpBlock(e) {
     }
 }
 function createLetmrExp(fn1,fn2,block) {
-    console.log('letmer');
     return ["LetmrExp",fn1,fn2,block];
 }
 function isLetmrExp(e) { 

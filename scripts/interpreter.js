@@ -1,5 +1,11 @@
 /* global SLang : true, parser, console  */
+/* 
+    Zach Tjugum, Mitchell Bricco, Jarrett Buchholz
+    In file interpreter.js we would replace line 77 with 
 
+    			    E.update(envir,
+    
+*/
 (function () {
 
     "use strict";
@@ -143,16 +149,21 @@ function evalExp(exp,envir) {
             evalExp(letsexp, envir);
         }
     } else if(A.isLetmrExp(exp)){
+        var dummy = E.createClo(1,2,3);
         var fn1 = A.getLetmrExpfn1(exp);
         var fn2 = A.getLetmrExpfn2(exp);
-        var body = A.getLetmrExpBody(exp);
-        console.log('fn1: ');
-        console.log(fn1);
-        console.log('fn2: ');
-        console.log(fn2);
-        console.log('body: ');
-        console.log(body);
-        return E.createNum(-1);
+        var body = A.getLetmrExpBlock(exp);
+        var fn1Name = fn1[1];
+        var fn2Name = fn2[1];
+        envir = E.update(envir, [fn1Name,fn2Name], [dummy,dummy]);
+        var clo1 = evalExp(A.getAssignExpRHS(fn1),envir);
+        var clo2 = evalExp(A.getAssignExpRHS(fn2),envir);
+        envir = E.update(envir, [fn1Name,fn2Name], [clo1,clo2]);
+        E.lookupReference(E.getCloEnv(clo1),fn1Name)[0] = clo1;
+        E.lookupReference(E.getCloEnv(clo2),fn2Name)[0] = clo2;
+        var fnexp = A.createFnExp([],body);
+        var appExp = SLang.absyn.createAppExp(fnexp,[]);
+        return evalExp(appExp, envir);
     } else {
 	throw "Error: Attempting to evaluate an invalid expression";
     }
